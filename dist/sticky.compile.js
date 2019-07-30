@@ -1,3 +1,5 @@
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -56,16 +58,16 @@ var Sticky = function () {
 
 
   Sticky.prototype.run = function run() {
-    var _this = this;
+    var _this2 = this;
 
     // wait for page to be fully loaded
     var pageLoaded = setInterval(function () {
       if (document.readyState === 'complete') {
         clearInterval(pageLoaded);
-
-        var elements = document.querySelectorAll(_this.selector);
-        _this.forEach(elements, function (element) {
-          return _this.renderElement(element);
+        //allow passing a single dom element, an array of elements, or a string selector
+        var elements = _typeof(_this2.selector) === 'object' ? typeof _this2.selector.length === 'undefined' ? [_this2.selector] : _this2.selector : document.querySelectorAll(_this2.selector);
+        _this2.forEach(elements, function (element) {
+          return _this2.renderElement(element);
         });
       }
     }, 10);
@@ -79,7 +81,7 @@ var Sticky = function () {
 
 
   Sticky.prototype.renderElement = function renderElement(element) {
-    var _this2 = this;
+    var _this3 = this;
 
     // create container for variables needed in future
     element.sticky = {};
@@ -103,7 +105,7 @@ var Sticky = function () {
     // fix when element is image that has not yet loaded and width, height = 0
     if (element.tagName.toLowerCase() === 'img') {
       element.onload = function () {
-        return element.sticky.rect = _this2.getRectangle(element);
+        return element.sticky.rect = _this3.getRectangle(element);
       };
     }
 
@@ -164,10 +166,10 @@ var Sticky = function () {
 
 
   Sticky.prototype.initResizeEvents = function initResizeEvents(element) {
-    var _this3 = this;
+    var _this4 = this;
 
     element.sticky.resizeListener = function () {
-      return _this3.onResizeEvents(element);
+      return _this4.onResizeEvents(element);
     };
     window.addEventListener('resize', element.sticky.resizeListener);
   };
@@ -213,10 +215,10 @@ var Sticky = function () {
 
 
   Sticky.prototype.initScrollEvents = function initScrollEvents(element) {
-    var _this4 = this;
+    var _this5 = this;
 
     element.sticky.scrollListener = function () {
-      return _this4.onScrollEvents(element);
+      return _this5.onScrollEvents(element);
     };
     window.addEventListener('scroll', element.sticky.scrollListener);
   };
@@ -320,14 +322,14 @@ var Sticky = function () {
 
 
   Sticky.prototype.update = function update() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.forEach(this.elements, function (element) {
-      element.sticky.rect = _this5.getRectangle(element);
-      element.sticky.container.rect = _this5.getRectangle(element.sticky.container);
+      element.sticky.rect = _this6.getRectangle(element);
+      element.sticky.container.rect = _this6.getRectangle(element.sticky.container);
 
-      _this5.activate(element);
-      _this5.setPosition(element);
+      _this6.activate(element);
+      _this6.setPosition(element);
     });
   };
 
@@ -338,12 +340,23 @@ var Sticky = function () {
 
 
   Sticky.prototype.destroy = function destroy() {
-    var _this6 = this;
+    var _this7 = this;
 
+    var _this = this;
     this.forEach(this.elements, function (element) {
-      _this6.destroyResizeEvents(element);
-      _this6.destroyScrollEvents(element);
+      _this7.destroyResizeEvents(element);
+      _this7.destroyScrollEvents(element);
+
+      element.removeAttribute('style');
       delete element.sticky;
+
+      // if(_this.element.dataset.stickyWrap){
+      //   _this.element.parentNode.parentNode.insertBefore(_this.element, _this.element.parentNode);
+      //   _this.element.parentNode.removeChild(_this.element.nextSibling);
+      // }
+      // _this.element.removeAttribute('style');
+
+      // delete element.sticky;
     });
   };
 
