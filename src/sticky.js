@@ -53,15 +53,8 @@ class Sticky {
     const pageLoaded = setInterval(() => {
       if (document.readyState === 'complete') {
         clearInterval(pageLoaded);
-
-        if( typeof this.selector === 'object' )
-        {
-          const elements = this.selector;
-        }
-        else
-        {
-          const elements = document.querySelectorAll(this.selector);
-        }
+        //allow passing a single dom element, an array of elements, or a string selector
+        const elements = typeof this.selector === 'object' ? (typeof this.selector.length === 'undefined' ? [this.selector] : this.selector) : document.querySelectorAll(this.selector);
         this.forEach(elements, (element) => this.renderElement(element));
       }
     }, 10);
@@ -327,10 +320,21 @@ class Sticky {
    * @function
    */
    destroy() {
+    const _this = this;
     this.forEach(this.elements, (element) => {
       this.destroyResizeEvents(element);
       this.destroyScrollEvents(element);
+
+      element.removeAttribute('style');
       delete element.sticky;
+
+      // if(_this.element.dataset.stickyWrap){
+      //   _this.element.parentNode.parentNode.insertBefore(_this.element, _this.element.parentNode);
+      //   _this.element.parentNode.removeChild(_this.element.nextSibling);
+      // }
+      // _this.element.removeAttribute('style');
+    
+      // delete element.sticky;
     });
    }
 
@@ -440,9 +444,7 @@ class Sticky {
   if (typeof exports !== 'undefined') {
     module.exports = factory;
   } else if (typeof define === 'function' && define.amd) {
-    define([], function() {
-      return factory;
-    });
+    define([], factory);
   } else {
     root.Sticky = factory;
   }
