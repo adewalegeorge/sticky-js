@@ -39,7 +39,8 @@ var Sticky = function () {
       marginTop: options.marginTop || 0,
       stickyFor: options.stickyFor || 0,
       stickyClass: options.stickyClass || null,
-      stickyContainer: options.stickyContainer || 'body'
+      stickyContainer: options.stickyContainer || 'body',
+      stickyContainerClass: options.stickyContainerClass || 'is-stuck-container'
     };
 
     this.updateScrollTopPosition = this.updateScrollTopPosition.bind(this);
@@ -94,8 +95,8 @@ var Sticky = function () {
     element.sticky.stickyClass = element.getAttribute('data-sticky-class') || this.options.stickyClass;
     element.sticky.wrap = element.hasAttribute('data-sticky-wrap') ? true : this.options.wrap;
     // @todo attribute for stickyContainer
-    // element.sticky.stickyContainer = element.getAttribute('data-sticky-container') || this.options.stickyContainer;
-    element.sticky.stickyContainer = this.options.stickyContainer;
+    element.sticky.stickyContainer = element.getAttribute('data-sticky-container') || this.options.stickyContainer;
+    // element.sticky.stickyContainer = this.options.stickyContainer;
 
     element.sticky.container = this.getStickyContainer(element);
     element.sticky.container.rect = this.getRectangle(element.sticky.container);
@@ -291,6 +292,7 @@ var Sticky = function () {
 
         if (element.sticky.stickyClass) {
           element.classList.remove(element.sticky.stickyClass);
+          element.sticky.container.classList.remove(element.sticky.stickyContainerClass);
         }
 
         this.css(element, {
@@ -298,6 +300,7 @@ var Sticky = function () {
       } else {
         if (element.sticky.stickyClass) {
           element.classList.add(element.sticky.stickyClass);
+          element.sticky.container.classList.add(element.sticky.stickyContainerClass);
         }
 
         this.css(element, { top: element.sticky.marginTop + 'px' });
@@ -305,6 +308,7 @@ var Sticky = function () {
     } else {
       if (element.sticky.stickyClass) {
         element.classList.remove(element.sticky.stickyClass);
+        element.sticky.container.classList.remove(element.sticky.stickyContainerClass);
       }
 
       this.css(element, { position: '', width: '', top: '', left: '' });
