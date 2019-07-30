@@ -94,9 +94,10 @@ var Sticky = function () {
     element.sticky.stickyFor = parseInt(element.getAttribute('data-sticky-for')) || this.options.stickyFor;
     element.sticky.stickyClass = element.getAttribute('data-sticky-class') || this.options.stickyClass;
     element.sticky.wrap = element.hasAttribute('data-sticky-wrap') ? true : this.options.wrap;
+
     // @todo attribute for stickyContainer
     element.sticky.stickyContainer = element.getAttribute('data-sticky-container') || this.options.stickyContainer;
-    // element.sticky.stickyContainer = this.options.stickyContainer;
+    element.sticky.stickyContainerClass = element.getAttribute('data-sticky-container-class') || this.options.stickyContainerClass;
 
     element.sticky.container = this.getStickyContainer(element);
     element.sticky.container.rect = this.getRectangle(element.sticky.container);
