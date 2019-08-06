@@ -262,12 +262,17 @@ class Sticky {
         left: element.sticky.rect.left + 'px',
         width: element.sticky.rect.width + 'px',
       });
+      element.classList.add(element.sticky.stickyClass);
+      element.sticky.container.classList.add(element.sticky.stickyContainerClass);
+
     } else if (this.scrollTop > (element.sticky.rect.top - element.sticky.marginTop)) {
       this.css(element, {
         position: 'fixed',
         width: element.sticky.rect.width + 'px',
         left: element.sticky.rect.left + 'px',
       });
+      element.classList.add(element.sticky.stickyClass);
+      element.sticky.container.classList.add(element.sticky.stickyContainerClass);
 
       if (
         (this.scrollTop + element.sticky.rect.height + element.sticky.marginTop)
